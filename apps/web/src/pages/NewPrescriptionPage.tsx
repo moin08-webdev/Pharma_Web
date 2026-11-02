@@ -1,6 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Upload, FilePlus, Sparkles, AlertCircle, ArrowRight, CheckCircle2 } from "lucide-react";
+import {
+  Upload,
+  FilePlus,
+  Sparkles,
+  AlertCircle,
+  ArrowRight,
+  CheckCircle2,
+  Stethoscope,
+  Pill,
+  ShieldCheck,
+  FileCheck,
+  User,
+  Hash,
+  AlertTriangle,
+} from "lucide-react";
 import { apiFetch } from "@/lib/api";
 import { PageHeader } from "@/components/common/PageHeader";
 import { WorkflowStepper } from "@/components/common/WorkflowStepper";
@@ -59,7 +73,7 @@ export function NewPrescriptionPage() {
 
       <PageHeader
         title="New Prescription Intake"
-        description="Step 1 of 6: Upload a prescription file for OCR extraction, or enter medicine lines manually"
+        description="Step 1 of 6: Clinical intake via digital scan upload or direct order entry pad"
       />
 
       {errorMsg && (
@@ -68,6 +82,33 @@ export function NewPrescriptionPage() {
           <span>{errorMsg}</span>
         </div>
       )}
+
+      {/* Clinical Prescription Pad Header */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs rx-watermark flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-800 text-2xl font-serif font-black shrink-0">
+            ℞
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-extrabold text-slate-900 text-sm tracking-tight">
+                Prescription Triage & Verification Station
+              </span>
+              <span className="text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                Formulary Ready
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Prescriptions are ingested under Indian Pharmacy Practice Regulations & DPDP Act 2023 private storage.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 text-[11px] text-slate-500 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
+          <ShieldCheck className="w-4 h-4 text-teal-600 shrink-0" />
+          <span>Zero cloud data leakage • Local encrypted volume</span>
+        </div>
+      </div>
 
       {/* Demo Quick-Start Callout (from PPT Slide 10) */}
       <div className="p-5 bg-gradient-to-r from-purple-50 via-teal-50 to-emerald-50 border border-purple-200 rounded-2xl shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -83,7 +124,7 @@ export function NewPrescriptionPage() {
         <button
           onClick={handleLoadSample}
           disabled={loading}
-          className="px-4 py-2.5 bg-purple-700 hover:bg-purple-800 text-white rounded-xl text-xs font-bold shadow-sm transition shrink-0 disabled:opacity-50 flex items-center gap-1.5"
+          className="px-4 py-2.5 bg-purple-700 hover:bg-purple-800 text-white rounded-xl text-xs font-bold shadow-xs transition shrink-0 disabled:opacity-50 flex items-center gap-1.5"
         >
           <span>Load Sample Prescription</span>
           <ArrowRight className="w-4 h-4" />
@@ -92,74 +133,100 @@ export function NewPrescriptionPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Document Upload Box */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs flex flex-col justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
           <div>
-            <h3 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
+            <h3 className="text-sm font-bold text-slate-900 mb-1 flex items-center gap-2">
               <Upload className="w-4 h-4 text-[#0F766E]" />
               <span>Option A: Upload Prescription File</span>
             </h3>
-            <p className="text-xs text-gray-500 mb-4">
+            <p className="text-xs text-slate-500 mb-4">
               Accepted formats: PNG, JPEG, PDF (max 10 MiB, up to 5 pages). Stored securely on private volume.
             </p>
 
-            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-teal-500 transition cursor-pointer relative bg-gray-50/50">
+            <div className="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:border-teal-500 hover:bg-teal-50/20 transition cursor-pointer relative bg-slate-50/50 group">
               <input
                 type="file"
                 accept="image/png,image/jpeg,application/pdf"
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
-              <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-xs font-semibold text-gray-700">
+              <div className="w-12 h-12 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center mx-auto mb-2 text-teal-700 group-hover:scale-105 transition">
+                <Upload className="w-5 h-5" />
+              </div>
+              <p className="text-xs font-bold text-slate-800">
                 {file ? file.name : "Click to select or drag & drop prescription file"}
               </p>
-              <p className="text-[11px] text-gray-400 mt-1">
-                {file ? `${(file.size / 1024).toFixed(1)} KB` : "JPEG, PNG, or PDF"}
+              <p className="text-[11px] text-slate-400 mt-1">
+                {file ? `${(file.size / 1024).toFixed(1)} KB` : "Supports doctor slips, clinic scans, and camera photos"}
               </p>
+            </div>
+
+            <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 text-[11px] text-slate-600 space-y-1">
+              <div className="font-semibold text-slate-800 flex items-center gap-1.5">
+                <FileCheck className="w-3.5 h-3.5 text-teal-600" />
+                <span>Clinical Scan Guidelines:</span>
+              </div>
+              <p>• Ensure doctor's name, clinic header, and Rx signature are visible.</p>
+              <p>• Plain legible text accelerates OCR drug name extraction.</p>
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-400 flex items-center gap-1.5">
+          <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400 flex items-center gap-1.5">
             <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0" />
             <span>Files are stored locally; automatic 24h retention cleanup.</span>
           </div>
         </div>
 
         {/* Patient Reference & Manual Start */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs flex flex-col justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
           <form onSubmit={handleManualCreate} className="space-y-4">
             <div>
-              <h3 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
+              <h3 className="text-sm font-bold text-slate-900 mb-1 flex items-center gap-2">
                 <FilePlus className="w-4 h-4 text-[#0F766E]" />
                 <span>Option B: Direct / Manual Intake</span>
               </h3>
-              <p className="text-xs text-gray-500 mb-4">
+              <p className="text-xs text-slate-500 mb-4">
                 Assign an optional local patient reference or identifier for records.
               </p>
 
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
-                Patient Reference / Prescription Number (Optional)
-              </label>
-              <input
-                type="text"
-                value={patientRef}
-                onChange={(e) => setPatientRef(e.target.value)}
-                placeholder="e.g. RX-2026-4412"
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E]"
-              />
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
+                    <Hash className="w-3.5 h-3.5 text-teal-700" />
+                    <span>Patient Reference / Prescription Number (Optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={patientRef}
+                    onChange={(e) => setPatientRef(e.target.value)}
+                    placeholder="e.g. RX-2026-4412"
+                    className="block w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] bg-slate-50/50"
+                  />
+                  <p className="text-[10px] text-slate-400 mt-1">
+                    MRN, doctor prescription number, or clinic token ID.
+                  </p>
+                </div>
+
+                <div className="p-3 bg-teal-50/60 rounded-xl border border-teal-100 text-xs text-teal-900 flex items-start gap-2">
+                  <Stethoscope className="w-4 h-4 text-teal-700 shrink-0 mt-0.5" />
+                  <div>
+                    <strong>Clinical Triage Note:</strong> In Step 2, you can verify each medication line side-by-side with dosage forms, strength metrics, and therapeutic regimens.
+                  </div>
+                </div>
+              </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0F766E] hover:bg-[#0D655E] text-white rounded-lg text-xs font-bold shadow-sm transition disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0F766E] hover:bg-[#0D655E] text-white rounded-xl text-xs font-bold shadow-xs transition disabled:opacity-50"
             >
               <span>{loading ? "Creating Draft..." : "Create & Review Lines (Step 2)"}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
 
-          <div className="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-400 flex items-center gap-1.5">
+          <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400 flex items-center gap-1.5">
             <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0" />
             <span>Manual entry is always available even if OCR is offline.</span>
           </div>

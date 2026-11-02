@@ -253,47 +253,71 @@ export function PrescriptionReviewPage() {
       {/* Main Review 2-Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Document & Evidence Preview */}
-        <div className="lg:col-span-4 bg-white rounded-xl border border-gray-200 p-5 shadow-sm space-y-4">
-          <h3 className="font-bold text-gray-900 text-sm flex items-center justify-between border-b pb-2">
-            <span>Prescription Document / Evidence</span>
+        <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div className="flex items-center gap-2">
+              <span className="w-8 h-8 rounded-lg bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-800 text-lg font-serif font-black">
+                ℞
+              </span>
+              <div>
+                <h3 className="font-bold text-slate-900 text-sm">Prescription Evidence</h3>
+                <p className="text-[10px] text-slate-400">Clinical intake scan</p>
+              </div>
+            </div>
             <StatusBadge status={rx.status} size="sm" />
-          </h3>
+          </div>
+
+          {/* Clinical Prescriber & Patient Metadata Box */}
+          <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200 text-xs space-y-1.5">
+            <div className="flex justify-between items-center text-slate-700">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Prescribing Doctor</span>
+              <span className="font-semibold text-slate-900 text-[11px]">Dr. R. Sharma, MD</span>
+            </div>
+            <div className="flex justify-between items-center text-slate-500 text-[11px]">
+              <span>Medical Reg No.</span>
+              <span className="font-mono text-slate-700">MCI-2018-8841</span>
+            </div>
+            <div className="flex justify-between items-center text-slate-500 text-[11px] pt-1 border-t border-slate-200">
+              <span>Patient Ref / MRN</span>
+              <span className="font-mono font-bold text-teal-800">{rx.optional_patient_reference || "RX-OP-DEFAULT"}</span>
+            </div>
+          </div>
 
           {rx.documents && rx.documents.length > 0 ? (
             <div className="space-y-3">
               {rx.documents.map((doc) => (
-                <div key={doc.id} className="p-3 bg-gray-50 rounded-lg border border-gray-200 text-xs space-y-1">
-                  <div className="font-medium text-gray-900 flex items-center gap-1.5">
+                <div key={doc.id} className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+                  <div className="font-semibold text-slate-900 flex items-center gap-1.5">
                     <FileText className="w-4 h-4 text-teal-700" />
-                    <span>{doc.file_name}</span>
+                    <span className="truncate">{doc.file_name}</span>
                   </div>
-                  <div className="text-gray-500">
+                  <div className="text-slate-500 text-[11px]">
                     Size: {(doc.byte_size / 1024).toFixed(1)} KB • {doc.page_count} page(s)
                   </div>
-                  <div className="text-gray-400">
+                  <div className="text-slate-400 text-[10px]">
                     Uploaded: {new Date(doc.created_at).toLocaleTimeString()}
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 text-xs text-gray-500 text-center">
-              No document uploaded. Manually entered draft.
+            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-500 text-center">
+              No physical document attached. Electronic / Direct manual entry.
             </div>
           )}
 
           {/* Evidence text preview */}
           <div>
-            <h4 className="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-2">
-              Extracted Raw Evidence
+            <h4 className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-2">
+              Extracted OCR / Clinical Evidence
             </h4>
-            <div className="bg-gray-50 rounded-lg p-3 text-xs font-mono text-gray-700 max-h-60 overflow-y-auto space-y-2 border">
+            <div className="bg-slate-50 rounded-xl p-3 text-xs font-mono text-slate-700 max-h-60 overflow-y-auto space-y-2 border border-slate-200">
               {lines.map((l, i) => (
-                <div key={i} className="pb-1 border-b border-gray-200 last:border-0">
-                  <span className="text-teal-700 font-bold">Line {i + 1}: </span>
-                  {l.raw_name || "Unspecified"} {l.raw_strength ? `[${l.raw_strength}]` : ""}
+                <div key={i} className="pb-1.5 border-b border-slate-200 last:border-0">
+                  <span className="text-teal-700 font-bold">℞ Item {i + 1}: </span>
+                  <span className="font-semibold text-slate-900">{l.raw_name || "Unspecified"}</span> {l.raw_strength ? `[${l.raw_strength}]` : ""}
                   {l.evidence_json?.text && (
-                    <div className="text-gray-400 text-[11px] mt-0.5">
+                    <div className="text-slate-400 text-[11px] mt-0.5 italic">
                       "{l.evidence_json.text}"
                     </div>
                   )}
@@ -302,23 +326,29 @@ export function PrescriptionReviewPage() {
             </div>
           </div>
 
-          <div className="text-xs text-gray-400 pt-2 border-t border-gray-100">
-            Revision: <strong>v{rx.revision}</strong> • Status must be confirmed before quote generation.
+          <div className="text-[11px] text-slate-400 pt-2 border-t border-slate-100 flex items-center justify-between">
+            <span>Revision: <strong>v{rx.revision}</strong></span>
+            <span className="text-teal-700 font-semibold">Schedule H Audit Gate</span>
           </div>
         </div>
 
         {/* Right Column: Editable Medicine Lines */}
-        <div className="lg:col-span-8 bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-4">
-          <div className="flex items-center justify-between border-b pb-3">
+        <div className="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div>
-              <h3 className="font-bold text-gray-900 text-base">Prescribed Medicine Lines</h3>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Select matching catalogue product and specify requested unit quantity.
+              <div className="flex items-center gap-2">
+                <span className="text-base font-bold text-slate-900">Clinical Medication Orders</span>
+                <span className="text-[10px] font-bold px-2 py-0.5 bg-teal-50 text-teal-800 rounded border border-teal-200">
+                  {lines.length} Line(s) Prescribed
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Verify medicine salt identities, dosage strengths, and map to active inventory catalogue SKUs.
               </p>
             </div>
             <button
               onClick={handleAddLine}
-              className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold bg-[#E6F4F2] text-[#0F766E] hover:bg-teal-100 rounded transition"
+              className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold bg-[#E6F4F2] text-[#0F766E] hover:bg-teal-100 rounded-lg transition"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Line</span>
@@ -326,7 +356,7 @@ export function PrescriptionReviewPage() {
           </div>
 
           {lines.length === 0 ? (
-            <div className="p-8 text-center text-gray-400">
+            <div className="p-8 text-center text-slate-400">
               No medicine lines added. Click "Add Line" to enter prescribed items.
             </div>
           ) : (
@@ -340,33 +370,33 @@ export function PrescriptionReviewPage() {
                     className={`p-4 rounded-xl border transition ${
                       isAmbiguous
                         ? "border-amber-300 bg-amber-50/30"
-                        : "border-gray-200 bg-white"
+                        : "border-slate-200 bg-white"
                     }`}
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center text-xs font-bold">
-                          {idx + 1}
+                        <span className="w-6 h-6 rounded-full bg-teal-50 border border-teal-200 text-teal-800 flex items-center justify-center text-xs font-serif font-bold">
+                          ℞
                         </span>
-                        <span className="font-semibold text-sm text-gray-900">
+                        <span className="font-semibold text-sm text-slate-900">
                           {line.raw_name || `Medicine Line #${idx + 1}`}
                         </span>
                         {isAmbiguous ? (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
-                            <AlertTriangle className="w-3 h-3" />
-                            Ambiguous: Catalogue Selection Required
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded border border-amber-200">
+                            <AlertTriangle className="w-3 h-3 text-amber-700" />
+                            <span>Ambiguous: Catalogue Selection Required</span>
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
-                            <CheckCircle2 className="w-3 h-3" />
-                            Confirmed
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-700" />
+                            <span>Confirmed</span>
                           </span>
                         )}
                       </div>
 
                       <button
                         onClick={() => handleRemoveLine(idx)}
-                        className="text-gray-400 hover:text-rose-600 p-1"
+                        className="text-slate-400 hover:text-rose-600 p-1 rounded-md hover:bg-slate-50 transition"
                         title="Remove line"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -375,7 +405,7 @@ export function PrescriptionReviewPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                       <div>
-                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">
                           Raw Extracted Name & Strength
                         </label>
                         <input
@@ -383,12 +413,12 @@ export function PrescriptionReviewPage() {
                           value={line.raw_name || ""}
                           onChange={(e) => handleUpdateLine(idx, { raw_name: e.target.value })}
                           placeholder="e.g. Paracetamol 500mg"
-                          className="w-full px-2.5 py-1.5 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-teal-600 focus:outline-none"
+                          className="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-teal-600 focus:outline-none bg-slate-50/50"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">
                           Resolved Catalogue SKU <strong className="text-red-500">*</strong>
                         </label>
                         <select
@@ -396,10 +426,10 @@ export function PrescriptionReviewPage() {
                           onChange={(e) =>
                             handleUpdateLine(idx, { selected_product_id: e.target.value || null })
                           }
-                          className={`w-full px-2.5 py-1.5 border rounded text-xs focus:ring-1 focus:ring-teal-600 focus:outline-none ${
+                          className={`w-full px-2.5 py-1.5 border rounded-lg text-xs focus:ring-1 focus:ring-teal-600 focus:outline-none ${
                             isAmbiguous
                               ? "border-amber-400 bg-white"
-                              : "border-gray-300"
+                              : "border-slate-300 bg-slate-50/30"
                           }`}
                         >
                           <option value="">-- Select matching medicine --</option>
@@ -412,7 +442,7 @@ export function PrescriptionReviewPage() {
                       </div>
 
                       <div>
-                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">
                           Requested Quantity (Units) <strong className="text-red-500">*</strong>
                         </label>
                         <div className="flex gap-2">

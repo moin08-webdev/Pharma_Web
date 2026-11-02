@@ -105,50 +105,72 @@ export function InventoryPage() {
       />
 
       {/* PPT Slide 06 Educational Banner */}
-      <div className="p-3.5 bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200 rounded-xl flex items-center justify-between text-xs text-teal-900 shadow-xs mb-6">
-        <div>
-          <strong>Using Stock Before It Expires (Slide 06 FEFO Rule):</strong> System automatically allocates the earliest valid expiry date first. Quarantined or expired stock is strictly blocked from dispensing.
+      <div className="p-4 bg-gradient-to-r from-teal-50 via-emerald-50 to-slate-50 border border-teal-200 rounded-2xl flex items-center justify-between text-xs text-teal-950 shadow-xs mb-6">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-teal-100 border border-teal-300 flex items-center justify-center text-teal-800 shrink-0">
+            <Package className="w-4 h-4 text-teal-700" />
+          </div>
+          <div>
+            <div className="font-extrabold text-teal-950">
+              FEFO Shelf Inventory Priority (Slide 06 Standard)
+            </div>
+            <p className="text-slate-600 mt-0.5">
+              The automated dispensing engine allocates earliest expiring active stock first. Expired or quarantined batches are strictly locked from counter fulfillment.
+            </p>
+          </div>
         </div>
-        <span className="font-bold text-teal-800 text-[11px] hidden sm:inline bg-teal-100 px-2.5 py-0.5 rounded">
-          Earliest Expiry First
+        <span className="font-extrabold text-teal-900 text-[11px] hidden sm:inline bg-teal-100/80 border border-teal-200 px-3 py-1 rounded-lg">
+          First-Expired, First-Out
         </span>
       </div>
 
       {/* Alert Stats */}
       {alerts && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between hover:border-amber-300 transition">
             <div>
-              <span className="text-xs font-semibold text-gray-500 uppercase">Low Stock SKUs</span>
-              <div className="text-2xl font-extrabold text-gray-900 mt-1">
+              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                <span>⚠️</span>
+                <span>Low Stock Formulations</span>
+              </span>
+              <div className="text-2xl font-extrabold text-slate-900 mt-1">
                 {alerts.low_stock_products_count}
               </div>
+              <p className="text-[11px] text-slate-400 mt-0.5">Re-order threshold alert</p>
             </div>
-            <div className="p-2 bg-amber-50 text-amber-700 rounded-lg">
+            <div className="p-3 bg-amber-50 text-amber-700 rounded-xl border border-amber-200">
               <AlertTriangle className="w-5 h-5" />
             </div>
           </div>
 
-          <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between hover:border-rose-300 transition">
             <div>
-              <span className="text-xs font-semibold text-gray-500 uppercase">Batches Expiring Soon</span>
-              <div className="text-2xl font-extrabold text-gray-900 mt-1">
+              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                <span>⏱️</span>
+                <span>Batches Expiring Soon</span>
+              </span>
+              <div className="text-2xl font-extrabold text-slate-900 mt-1">
                 {alerts.expiring_soon_batches_count}
               </div>
+              <p className="text-[11px] text-slate-400 mt-0.5">Within 90-day buffer (FEFO priority)</p>
             </div>
-            <div className="p-2 bg-rose-50 text-rose-700 rounded-lg">
+            <div className="p-3 bg-rose-50 text-rose-700 rounded-xl border border-rose-200">
               <ShieldAlert className="w-5 h-5" />
             </div>
           </div>
 
-          <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between hover:border-purple-300 transition">
             <div>
-              <span className="text-xs font-semibold text-gray-500 uppercase">Quarantined Batches</span>
-              <div className="text-2xl font-extrabold text-gray-900 mt-1">
+              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                <span>🚫</span>
+                <span>Quarantined Batches</span>
+              </span>
+              <div className="text-2xl font-extrabold text-slate-900 mt-1">
                 {alerts.quarantined_batches_count}
               </div>
+              <p className="text-[11px] text-slate-400 mt-0.5">Isolated from dispensing</p>
             </div>
-            <div className="p-2 bg-purple-50 text-purple-700 rounded-lg">
+            <div className="p-3 bg-purple-50 text-purple-700 rounded-xl border border-purple-200">
               <Package className="w-5 h-5" />
             </div>
           </div>

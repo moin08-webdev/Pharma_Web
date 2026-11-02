@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AlertCircle, Sparkles } from "lucide-react";
+import { AlertCircle, Sparkles, ShieldCheck, Stethoscope } from "lucide-react";
 import { useLogin } from "@/features/auth/hooks";
 
 export function LoginPage() {
@@ -47,6 +47,12 @@ export function LoginPage() {
         <p className="mt-0.5 text-center text-xs text-gray-500 max-w-sm mx-auto">
           Helps pharmacists check medicines, compare costs, and manage stock.
         </p>
+        <div className="flex items-center justify-center gap-2 mt-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-semibold bg-teal-50 text-teal-800 border border-teal-200 shadow-xs">
+            <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
+            <span>Dispensary Staff Authentication Portal</span>
+          </span>
+        </div>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">

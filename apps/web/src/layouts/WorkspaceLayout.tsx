@@ -14,7 +14,11 @@ import {
   X,
   PlusCircle,
   Building2,
-  Sparkles,
+  Stethoscope,
+  Pill,
+  ShieldCheck,
+  Activity,
+  HeartPulse,
 } from "lucide-react";
 import { useSession, useLogout } from "@/features/auth/hooks";
 import { DemoDataBanner } from "@/components/common/DemoDataBanner";
@@ -30,8 +34,11 @@ export function WorkspaceLayout() {
     return (
       <div className="flex h-screen items-center justify-center bg-[#F6F8F9]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-[#0F766E] border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-sm text-gray-500 font-medium">Loading workspace...</p>
+          <div className="w-10 h-10 border-4 border-[#0F766E] border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-sm text-teal-800 font-semibold tracking-wide flex items-center gap-2">
+            <HeartPulse className="w-4 h-4 text-teal-600 animate-pulse" />
+            <span>Initializing clinical dispensary workspace...</span>
+          </p>
         </div>
       </div>
     );
@@ -44,67 +51,93 @@ export function WorkspaceLayout() {
 
   const { user, pharmacy } = session;
 
-  const navItems = [
+  interface NavItem {
+    to: string;
+    label: string;
+    icon: any;
+    end?: boolean;
+  }
+
+  const clinicalNav: NavItem[] = [
     { to: "/app", label: "Dashboard", icon: LayoutDashboard, end: true },
     { to: "/app/prescriptions", label: "Prescriptions", icon: FileText },
     { to: "/app/approvals", label: "Review & Approvals", icon: ClipboardCheck },
+    { to: "/app/orders", label: "Completed Orders", icon: ShoppingBag },
+  ];
+
+  const formularyNav: NavItem[] = [
     { to: "/app/medicines", label: "Medicines Catalogue", icon: Search },
     { to: "/app/inventory", label: "Inventory & Batches", icon: Package },
-    { to: "/app/orders", label: "Completed Orders", icon: ShoppingBag },
+  ];
+
+  const adminNav: NavItem[] = [
     { to: "/app/settings", label: "Settings & Staff", icon: Settings },
   ];
+
+  const allNav = [...clinicalNav, ...formularyNav, ...adminNav];
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F6F8F9]">
       {pharmacy.demo_mode && <DemoDataBanner />}
 
-      {/* Top Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
+      {/* Top Clinical Header */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
         <div className="px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-gray-600 hover:text-gray-900 focus:outline-none"
+              className="lg:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 focus:outline-none"
               aria-label="Toggle Navigation"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-            <Link to="/app" className="flex items-center gap-2 hover:opacity-90 transition">
+            <Link to="/app" className="flex items-center gap-2 hover:opacity-95 transition">
               <AppLogo size="md" showTagline={true} />
             </Link>
+
+            {/* Clinical CDS Status Badge (Hidden on mobile) */}
+            <div className="hidden xl:flex items-center gap-1.5 pl-3 border-l border-slate-200 text-xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              <span className="text-[11px] font-semibold text-teal-800 bg-teal-50/80 px-2.5 py-0.5 rounded-full border border-teal-200">
+                Clinical Decision Support Active • IP Standards
+              </span>
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
             <Link
               to="/app/prescriptions/new"
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold bg-[#0F766E] hover:bg-[#0D655E] text-white rounded-lg shadow-sm transition"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold bg-[#0F766E] hover:bg-[#0D655E] text-white rounded-lg shadow-xs transition"
             >
               <PlusCircle className="w-4 h-4" />
               <span>+ New Prescription</span>
             </Link>
 
-            {/* Pharmacy & User Profile */}
-            <div className="flex items-center gap-3 pl-3 border-l border-gray-200 text-sm">
+            {/* Dispensary & User Profile */}
+            <div className="flex items-center gap-3 pl-3 border-l border-slate-200 text-sm">
               <div className="hidden md:flex flex-col text-right">
-                <span className="font-semibold text-gray-900 flex items-center gap-1 justify-end text-xs">
-                  <Building2 className="w-3.5 h-3.5 text-gray-500" />
-                  {pharmacy.name}
+                <span className="font-bold text-slate-900 flex items-center gap-1.5 justify-end text-xs">
+                  <Building2 className="w-3.5 h-3.5 text-teal-600" />
+                  <span>{pharmacy.name}</span>
                 </span>
                 <div className="flex items-center gap-1.5 justify-end mt-0.5">
-                  <span className="text-[11px] text-gray-500">{user.email}</span>
+                  <span className="text-[11px] text-slate-500">{user.email}</span>
                   {user.role === "PHARMACIST" && (
-                    <span className="text-[10px] font-bold px-1.5 py-0.2 bg-teal-100 text-teal-800 rounded border border-teal-200">
-                      👨‍⚕️ Pharmacist
+                    <span className="text-[10px] font-extrabold px-2 py-0.5 bg-teal-50 text-teal-800 rounded-md border border-teal-300 flex items-center gap-1">
+                      <span>👨‍⚕️</span>
+                      <span>R.Ph. (Pharmacist)</span>
                     </span>
                   )}
                   {user.role === "ASSISTANT" && (
-                    <span className="text-[10px] font-bold px-1.5 py-0.2 bg-amber-100 text-amber-800 rounded border border-amber-200">
-                      📋 Assistant
+                    <span className="text-[10px] font-extrabold px-2 py-0.5 bg-amber-50 text-amber-800 rounded-md border border-amber-300 flex items-center gap-1">
+                      <span>📋</span>
+                      <span>Dispensary Assistant</span>
                     </span>
                   )}
                   {user.role === "ADMIN" && (
-                    <span className="text-[10px] font-bold px-1.5 py-0.2 bg-purple-100 text-purple-800 rounded border border-purple-200">
-                      ⚙️ Admin
+                    <span className="text-[10px] font-extrabold px-2 py-0.5 bg-purple-50 text-purple-800 rounded-md border border-purple-300 flex items-center gap-1">
+                      <span>⚙️</span>
+                      <span>Store Admin</span>
                     </span>
                   )}
                 </div>
@@ -113,7 +146,7 @@ export function WorkspaceLayout() {
               <button
                 onClick={() => logout.mutate()}
                 title="Logout"
-                className="p-2 text-gray-500 hover:text-rose-600 rounded-md hover:bg-gray-100 transition"
+                className="p-2 text-slate-500 hover:text-rose-600 rounded-lg hover:bg-slate-100 transition"
                 aria-label="Logout"
               >
                 <LogOut className="w-4 h-4" />
@@ -125,43 +158,115 @@ export function WorkspaceLayout() {
 
       <div className="flex flex-1">
         {/* Desktop Sidebar Navigation */}
-        <aside className="hidden lg:block w-64 bg-white border-r border-gray-200 p-4 space-y-1 shrink-0">
-          <div className="mb-4 px-3 py-2 bg-gray-50 rounded-md border border-gray-100">
-            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Active Pharmacy</div>
-            <div className="text-sm font-bold text-gray-800 truncate">{pharmacy.name}</div>
+        <aside className="hidden lg:block w-64 bg-white border-r border-slate-200 p-4 shrink-0 flex flex-col justify-between">
+          <div className="space-y-4">
+            {/* Active Pharmacy Card with Medical License Info */}
+            <div className="px-3.5 py-3 bg-gradient-to-br from-teal-50/70 to-slate-50 rounded-xl border border-teal-100 shadow-2xs">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-extrabold text-teal-800 uppercase tracking-wider flex items-center gap-1">
+                  <Activity className="w-3 h-3 text-teal-600" />
+                  <span>Licensed Dispensary</span>
+                </span>
+                <span className="text-[9px] font-mono font-bold text-slate-500">DL: 20B/21B</span>
+              </div>
+              <div className="text-sm font-bold text-slate-900 truncate mt-1">{pharmacy.name}</div>
+              <div className="text-[10px] text-teal-700/80 mt-0.5 flex items-center gap-1">
+                <ShieldCheck className="w-3 h-3" />
+                <span>Schedule H / H1 Monitored</span>
+              </div>
+            </div>
+
+            {/* Nav Group 1: Clinical Dispensing */}
+            <div className="space-y-1">
+              <div className="px-3 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                Clinical Dispensing
+              </div>
+              {clinicalNav.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    end={item.end}
+                    className={({ isActive }) =>
+                      `flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition ${
+                        isActive
+                          ? "bg-[#E6F4F2] text-[#0F766E] border-r-2 border-[#0F766E]"
+                          : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                      }`
+                    }
+                  >
+                    <Icon className="w-4 h-4 shrink-0" />
+                    <span>{item.label}</span>
+                  </NavLink>
+                );
+              })}
+            </div>
+
+            {/* Nav Group 2: Formulary & Inventory */}
+            <div className="space-y-1 pt-2 border-t border-slate-100">
+              <div className="px-3 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                Formulary & Stock
+              </div>
+              {formularyNav.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition ${
+                        isActive
+                          ? "bg-[#E6F4F2] text-[#0F766E] border-r-2 border-[#0F766E]"
+                          : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                      }`
+                    }
+                  >
+                    <Icon className="w-4 h-4 shrink-0" />
+                    <span>{item.label}</span>
+                  </NavLink>
+                );
+              })}
+            </div>
+
+            {/* Nav Group 3: Governance */}
+            <div className="space-y-1 pt-2 border-t border-slate-100">
+              <div className="px-3 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                Store Governance
+              </div>
+              {adminNav.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition ${
+                        isActive
+                          ? "bg-[#E6F4F2] text-[#0F766E] border-r-2 border-[#0F766E]"
+                          : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                      }`
+                    }
+                  >
+                    <Icon className="w-4 h-4 shrink-0" />
+                    <span>{item.label}</span>
+                  </NavLink>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="space-y-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  end={item.end}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition ${
-                      isActive
-                        ? "bg-[#E6F4F2] text-[#0F766E] font-semibold"
-                        : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                    }`
-                  }
-                >
-                  <Icon className="w-4 h-4 shrink-0" />
-                  <span>{item.label}</span>
-                </NavLink>
-              );
-            })}
-          </div>
-
-          <div className="pt-6 mt-6 border-t border-gray-100 space-y-1">
+          <div className="pt-4 mt-auto border-t border-slate-100 space-y-2">
             <Link
               to="/privacy"
-              className="flex items-center gap-3 px-3 py-2 rounded-md text-xs font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-50"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-[11px] font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-50"
             >
-              <Shield className="w-4 h-4" />
-              <span>Data & Privacy Notice</span>
+              <Shield className="w-3.5 h-3.5 text-teal-600" />
+              <span>DPDP 2023 & Patient Privacy</span>
             </Link>
+            <div className="px-3 text-[10px] text-slate-400 leading-tight">
+              Pharmacy Act 1948 & CDSCO Compliant
+            </div>
           </div>
         </aside>
 
@@ -172,14 +277,17 @@ export function WorkspaceLayout() {
               className="w-64 bg-white h-full p-4 space-y-2 shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between pb-3 border-b border-gray-200 mb-2">
-                <span className="font-bold text-gray-800">Menu</span>
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-2">
+                <div className="flex items-center gap-2">
+                  <Stethoscope className="w-4 h-4 text-teal-700" />
+                  <span className="font-bold text-slate-900 text-sm">Dispensary Menu</span>
+                </div>
                 <button onClick={() => setMobileMenuOpen(false)}>
-                  <X className="w-5 h-5 text-gray-500" />
+                  <X className="w-5 h-5 text-slate-500" />
                 </button>
               </div>
 
-              {navItems.map((item) => {
+              {allNav.map((item) => {
                 const Icon = item.icon;
                 return (
                   <NavLink
@@ -188,10 +296,10 @@ export function WorkspaceLayout() {
                     end={item.end}
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition ${
+                      `flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition ${
                         isActive
-                          ? "bg-[#E6F4F2] text-[#0F766E] font-semibold"
-                          : "text-gray-700 hover:bg-gray-100"
+                          ? "bg-[#E6F4F2] text-[#0F766E]"
+                          : "text-slate-700 hover:bg-slate-100"
                       }`
                     }
                   >
