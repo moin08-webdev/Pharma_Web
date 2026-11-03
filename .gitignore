@@ -25,6 +25,7 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+*.zip
 
 # Uploads & Runtime storage
 data/private-uploads/*

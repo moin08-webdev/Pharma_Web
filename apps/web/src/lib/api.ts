@@ -41,7 +41,10 @@ export async function apiFetch<T>(
     headers.set("X-CSRF-Token", csrfTokenCache);
   }
 
-  const response = await fetch(endpoint, {
+  const apiBase = ((import.meta as any).env?.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, "") || "";
+  const targetUrl = endpoint.startsWith("/") && apiBase ? `${apiBase}${endpoint}` : endpoint;
+
+  const response = await fetch(targetUrl, {
     ...options,
     headers,
     credentials: "include", // send session cookie
