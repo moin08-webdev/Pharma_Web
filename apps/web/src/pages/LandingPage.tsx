@@ -6,7 +6,6 @@ import {
   CheckCircle2,
   TrendingDown,
   Layers,
-  Sparkles,
   FileText,
   Clock,
   Package,
@@ -48,16 +47,16 @@ export function LandingPage() {
       {/* Hero Section */}
       <main className="max-w-6xl mx-auto px-4 py-12 text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 text-xs font-bold bg-teal-50 text-[#0F766E] border border-teal-200 rounded-full mb-6">
-          <Sparkles className="w-3.5 h-3.5 text-teal-600" />
-          <span>SHARKFORGE 2026 • AI Pharmacy Workspace</span>
+          <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
+          <span>Clinical Dispensary Workspace</span>
         </div>
 
         <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
-          AI Help for Everyday Pharmacy Work
+          Clinical Prescription Fulfilment & Inventory Workspace
         </h1>
 
         <p className="mt-3 text-lg sm:text-xl text-teal-800 font-semibold max-w-2xl mx-auto">
-          Helps pharmacists check medicines, compare costs, and manage stock.
+          Helps pharmacists verify medicines, compare formulations, and dispense stock.
         </p>
 
         <p className="mt-2 text-sm text-gray-600 max-w-xl mx-auto leading-relaxed">
@@ -74,17 +73,17 @@ export function LandingPage() {
           </Link>
         </div>
 
-        {/* 6-Step Visual Workflow Banner (from PPT Slide 03) */}
+        {/* 6-Step Visual Workflow Section */}
         <div className="mt-16 text-left">
           <div className="text-center mb-6">
             <span className="text-xs font-bold text-teal-800 uppercase tracking-wider bg-teal-50 px-3 py-1 rounded-full border border-teal-200">
-              How the App Works
+              Workflow Overview
             </span>
             <h2 className="text-2xl font-bold text-gray-900 mt-2">
-              Six Simple Steps from Prescription to Order
+              Six Structured Steps from Prescription to Order
             </h2>
             <p className="text-xs text-gray-500 mt-1">
-              AI reads the text. Pharmacists review and approve before moving ahead.
+              Digital prescription intake with registered pharmacist verification & approval.
             </p>
           </div>
 
@@ -108,7 +107,7 @@ export function LandingPage() {
           </div>
         </div>
 
-        {/* 2 Showcase Highlights: Pack Savings & FEFO Expiry (from PPT Slides 05 & 06) */}
+        {/* 2 Showcase Highlights: Pack Savings & FEFO Expiry */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 text-left">
           {/* Highlight 1: What the patient pays */}
           <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between">
@@ -196,7 +195,7 @@ export function LandingPage() {
       <footer className="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <AppLogo size="sm" showTagline={false} />
-          <div>AI-assisted prescription fulfilment workspace for Indian pharmacies.</div>
+          <div>Clinical prescription fulfilment workspace for Indian community pharmacies.</div>
           <div className="text-gray-400">Production-Grade Release v1.0 MVP</div>
         </div>
       </footer>

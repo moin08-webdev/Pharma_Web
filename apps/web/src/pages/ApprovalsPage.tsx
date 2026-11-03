@@ -20,12 +20,12 @@ export function ApprovalsPage() {
         description="Pharmacist review queue for submitted formulation plans and substitution authorizations"
       />
 
-      {/* PPT Slide 07 Role Callout */}
-      <div className="p-3.5 bg-gradient-to-r from-teal-50 to-purple-50 border border-teal-200 rounded-xl flex items-center justify-between text-xs text-teal-900 shadow-xs mb-6">
+      {/* Role Governance Standard */}
+      <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs text-slate-800 shadow-xs mb-6">
         <div>
-          <strong>Role Governance (Slide 07):</strong> Assistants can intake and check details, but only registered <strong>Pharmacists</strong> can clinically approve medicine substitutions and authorize stock deduction.
+          <strong>Role Governance Standard:</strong> Dispensary assistants can intake and check details, but only registered <strong>Pharmacists</strong> can clinically approve medicine substitutions and authorize stock deduction.
         </div>
-        <span className="font-bold text-teal-800 text-[11px] hidden sm:inline bg-teal-100 px-2.5 py-0.5 rounded">
+        <span className="font-semibold text-slate-700 text-[11px] hidden sm:inline bg-white border border-slate-200 px-2.5 py-0.5 rounded">
           Pharmacy Act 1948
         </span>
       </div>

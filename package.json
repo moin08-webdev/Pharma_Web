@@ -16,7 +16,7 @@
     "test:integration": "uv run --project apps/api pytest tests/integration",
     "test:e2e": "playwright test -c tests/e2e/playwright.config.ts",
     "db:migrate": "uv run --project apps/api alembic upgrade head",
-    "db:seed": "uv run --project apps/api python -m app.seed.seed_demo",
+    "db:seed": "uv run --directory apps/api python -m app.seed.seed_demo",
     "api:generate": "python scripts/generate_api_client.py",
     "check": "python scripts/check.py"
   },

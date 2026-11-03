@@ -97,7 +97,7 @@ export function WorkspaceLayout() {
 
             {/* Clinical CDS Status Badge (Hidden on mobile) */}
             <div className="hidden xl:flex items-center gap-1.5 pl-3 border-l border-slate-200 text-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span className="text-[11px] font-semibold text-teal-800 bg-teal-50/80 px-2.5 py-0.5 rounded-full border border-teal-200">
                 Clinical Decision Support Active • IP Standards
               </span>
@@ -124,19 +124,19 @@ export function WorkspaceLayout() {
                   <span className="text-[11px] text-slate-500">{user.email}</span>
                   {user.role === "PHARMACIST" && (
                     <span className="text-[10px] font-extrabold px-2 py-0.5 bg-teal-50 text-teal-800 rounded-md border border-teal-300 flex items-center gap-1">
-                      <span>👨‍⚕️</span>
+                      <Stethoscope className="w-3 h-3 text-teal-700" />
                       <span>R.Ph. (Pharmacist)</span>
                     </span>
                   )}
                   {user.role === "ASSISTANT" && (
                     <span className="text-[10px] font-extrabold px-2 py-0.5 bg-amber-50 text-amber-800 rounded-md border border-amber-300 flex items-center gap-1">
-                      <span>📋</span>
+                      <FileText className="w-3 h-3 text-amber-700" />
                       <span>Dispensary Assistant</span>
                     </span>
                   )}
                   {user.role === "ADMIN" && (
                     <span className="text-[10px] font-extrabold px-2 py-0.5 bg-purple-50 text-purple-800 rounded-md border border-purple-300 flex items-center gap-1">
-                      <span>⚙️</span>
+                      <Settings className="w-3 h-3 text-purple-700" />
                       <span>Store Admin</span>
                     </span>
                   )}

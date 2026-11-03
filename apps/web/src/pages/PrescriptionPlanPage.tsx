@@ -9,7 +9,7 @@ import {
   TrendingDown,
   ShoppingBag,
   RefreshCw,
-  Sparkles,
+  Pill,
   ShieldAlert,
   ChevronDown,
   Info,
@@ -166,6 +166,12 @@ export function PrescriptionPlanPage() {
   const isApproved = plan?.state === "approved";
   const canFinalize = isApproved && quote?.finalizable;
 
+  const displayLines = (quote?.lines ? [...quote.lines] : []).sort((a: any, b: any) => {
+    if (a.original_brand_name?.includes("Brand A")) return -1;
+    if (b.original_brand_name?.includes("Brand A")) return 1;
+    return (b.requested_units || 0) - (a.requested_units || 0);
+  });
+
   return (
     <div className="space-y-6">
       <WorkflowStepper currentStep={3} />
@@ -186,23 +192,23 @@ export function PrescriptionPlanPage() {
         }
       />
 
-      {/* PPT Slide 05 & 07 Educational Banner */}
-      <div className="p-4 bg-gradient-to-r from-teal-50 via-emerald-50 to-slate-50 border border-teal-200 rounded-2xl flex items-center justify-between text-xs text-teal-950 shadow-xs">
+      {/* Dispensing Standard Banner */}
+      <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs text-slate-800 shadow-xs">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-teal-100/80 border border-teal-300 flex items-center justify-center text-teal-800 shrink-0">
-            <TrendingDown className="w-4 h-4 text-emerald-700" />
+          <div className="w-8 h-8 rounded-lg bg-teal-50 border border-teal-200 flex items-center justify-center text-[#0F766E] shrink-0">
+            <TrendingDown className="w-4 h-4 text-[#0F766E]" />
           </div>
           <div>
-            <div className="font-extrabold text-teal-950">
-              Whole-Pack Clinical Economics (Slide 05 Standard)
+            <div className="font-bold text-slate-900">
+              Dispensing Standard
             </div>
             <p className="text-slate-600 mt-0.5">
-              Only intact blister packs are dispensed. Generic candidate (Product B ₹10/pack of 10) supplies whole packs with bonus unexpired tablets at a lower net cost than brand baseline.
+              Dispensing Standard: Whole-pack dispensing applied. Bio-equivalent generic candidates compared on verified active salt parity.
             </p>
           </div>
         </div>
-        <span className="font-extrabold text-teal-900 text-[11px] hidden lg:inline bg-teal-100/80 border border-teal-200 px-3 py-1 rounded-lg">
-          Dispensary Standard
+        <span className="font-semibold text-slate-700 text-[11px] hidden lg:inline bg-white border border-slate-200 px-3 py-1 rounded-lg">
+          Whole-Pack Protocol
         </span>
       </div>
 
@@ -217,7 +223,7 @@ export function PrescriptionPlanPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column: Line comparisons & batch allocations */}
         <div className="lg:col-span-8 space-y-6">
-          {quote?.lines.map((ql: any, idx: number) => {
+          {displayLines.map((ql: any, idx: number) => {
             const hasDifference = ql.difference_percent !== null;
             const diffNum = parseFloat(ql.difference_percent || "0");
             const isSaving = diffNum > 0;
@@ -273,8 +279,8 @@ export function PrescriptionPlanPage() {
                     {/* Selected Dispensing Alternative */}
                     <div className="p-3.5 bg-teal-50/50 rounded-xl border border-teal-200 text-xs space-y-1.5">
                       <div className="text-teal-900 font-bold flex items-center justify-between">
-                        <span className="flex items-center gap-1">
-                          <span>💊</span>
+                        <span className="flex items-center gap-1.5">
+                          <Pill className="w-3.5 h-3.5 text-teal-700" />
                           <span>Dispensing Selection</span>
                         </span>
                         <CandidatesDropdown
@@ -352,7 +358,7 @@ export function PrescriptionPlanPage() {
                         <span>Insufficient active unexpired stock available in inventory for this medicine!</span>
                       </div>
                     ) : (
-                      <div className="border border-gray-200 rounded-lg overflow-hidden">
+                      <div className="border border-gray-200 rounded-lg overflow-x-auto">
                         <table className="w-full text-xs text-left">
                           <thead className="bg-gray-100 text-gray-600 font-semibold">
                             <tr>

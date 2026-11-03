@@ -73,7 +73,12 @@ export function PrescriptionReviewPage() {
 
   useEffect(() => {
     if (rx && rx.lines) {
-      setLines(rx.lines);
+      const sorted = [...rx.lines].sort((a, b) => {
+        if (a.raw_name?.includes("Brand A")) return -1;
+        if (b.raw_name?.includes("Brand A")) return 1;
+        return (b.requested_quantity || 0) - (a.requested_quantity || 0);
+      });
+      setLines(sorted);
     }
   }, [rx]);
 
@@ -223,12 +228,12 @@ export function PrescriptionReviewPage() {
         }
       />
 
-      {/* PPT Rule Banner (from Slide 04) */}
+      {/* Clinical Verification Standard Notice */}
       <div className="p-3.5 bg-teal-50 border border-teal-200 rounded-xl flex items-center justify-between text-xs text-teal-900 shadow-xs">
         <div className="flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-teal-700 shrink-0" />
           <span>
-            <strong>Clinical Safety Rule (Slide 04):</strong> Medicine details must match before comparing prices (Active ingredient & salt, strength, form, release speed). Missing details pause the process.
+            <strong>Clinical Verification Standard:</strong> Medicine name, salt composition, dosage form, and strength must be confirmed prior to plan generation.
           </span>
         </div>
         <span className="font-bold text-teal-800 text-[11px] hidden md:inline bg-teal-100 px-2 py-0.5 rounded">

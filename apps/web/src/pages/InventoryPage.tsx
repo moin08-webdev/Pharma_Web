@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Package, PlusCircle, AlertTriangle, ShieldAlert, CheckCircle2, X } from "lucide-react";
+import { Package, PlusCircle, AlertTriangle, ShieldAlert, CheckCircle2, X, Clock } from "lucide-react";
 import { apiFetch } from "@/lib/api";
 import { PageHeader } from "@/components/common/PageHeader";
 import { SourceBadge } from "@/components/common/SourceBadge";
@@ -104,23 +104,23 @@ export function InventoryPage() {
         }
       />
 
-      {/* PPT Slide 06 Educational Banner */}
-      <div className="p-4 bg-gradient-to-r from-teal-50 via-emerald-50 to-slate-50 border border-teal-200 rounded-2xl flex items-center justify-between text-xs text-teal-950 shadow-xs mb-6">
+      {/* FEFO Shelf Inventory Priority Banner */}
+      <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs text-slate-800 shadow-xs mb-6">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-teal-100 border border-teal-300 flex items-center justify-center text-teal-800 shrink-0">
-            <Package className="w-4 h-4 text-teal-700" />
+          <div className="w-8 h-8 rounded-lg bg-teal-50 border border-teal-200 flex items-center justify-center text-[#0F766E] shrink-0">
+            <Package className="w-4 h-4 text-[#0F766E]" />
           </div>
           <div>
-            <div className="font-extrabold text-teal-950">
-              FEFO Shelf Inventory Priority (Slide 06 Standard)
+            <div className="font-bold text-slate-900">
+              FEFO Shelf Inventory Priority
             </div>
             <p className="text-slate-600 mt-0.5">
               The automated dispensing engine allocates earliest expiring active stock first. Expired or quarantined batches are strictly locked from counter fulfillment.
             </p>
           </div>
         </div>
-        <span className="font-extrabold text-teal-900 text-[11px] hidden sm:inline bg-teal-100/80 border border-teal-200 px-3 py-1 rounded-lg">
-          First-Expired, First-Out
+        <span className="font-semibold text-slate-700 text-[11px] hidden sm:inline bg-white border border-slate-200 px-3 py-1 rounded-lg">
+          First-Expired, First-Out (FEFO)
         </span>
       </div>
 
@@ -129,8 +129,8 @@ export function InventoryPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between hover:border-amber-300 transition">
             <div>
-              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                <span>⚠️</span>
+              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
                 <span>Low Stock Formulations</span>
               </span>
               <div className="text-2xl font-extrabold text-slate-900 mt-1">
@@ -145,8 +145,8 @@ export function InventoryPage() {
 
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between hover:border-rose-300 transition">
             <div>
-              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                <span>⏱️</span>
+              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-rose-600" />
                 <span>Batches Expiring Soon</span>
               </span>
               <div className="text-2xl font-extrabold text-slate-900 mt-1">
@@ -159,10 +159,10 @@ export function InventoryPage() {
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between hover:border-purple-300 transition">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between hover:border-slate-300 transition">
             <div>
-              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                <span>🚫</span>
+              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                <ShieldAlert className="w-3.5 h-3.5 text-slate-600" />
                 <span>Quarantined Batches</span>
               </span>
               <div className="text-2xl font-extrabold text-slate-900 mt-1">
@@ -170,7 +170,7 @@ export function InventoryPage() {
               </div>
               <p className="text-[11px] text-slate-400 mt-0.5">Isolated from dispensing</p>
             </div>
-            <div className="p-3 bg-purple-50 text-purple-700 rounded-xl border border-purple-200">
+            <div className="p-3 bg-slate-100 text-slate-700 rounded-xl border border-slate-200">
               <Package className="w-5 h-5" />
             </div>
           </div>

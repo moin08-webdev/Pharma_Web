@@ -48,7 +48,7 @@ export function AppLogo({
           </div>
           {showTagline && (
             <span className="text-[11px] text-gray-500 font-medium">
-              AI help for everyday pharmacy work
+              Clinical Pharmacy Workspace
             </span>
           )}
         </div>
